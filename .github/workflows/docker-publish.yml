@@ -8,16 +8,16 @@ on:
       - 'v*'
 
 permissions:
-  contents: read        # for actions/checkout
-  packages: write       # to push images to GHCR
+  contents: read
+  packages: write
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Check out the repo
-      - name: Checkout code
+      # 1. Check out the code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       # 2. Log in to GHCR
@@ -29,10 +29,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # 3. Build and push the base-mcp image
-      - name: Build and push Docker image
+      - name: Build & push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
+          file: Dockerfile.base       
           push: true
           tags: |
             ghcr.io/cyreneai/base-mcp:latest
